@@ -64,6 +64,12 @@ const getFromStorage = function() {
         return Promise.reject();
     });
 };
+const convertIdForStorage = function(competitionId) {
+    return competitionId;
+};
+const convertIdForNetwork = function(competitionId) {
+    return parseInt(competitionId.split("-")[1]);
+};
 
 class CompetitionService {
 
@@ -101,3 +107,4 @@ class CompetitionService {
 
 
 export default CompetitionService;
+export {convertIdForNetwork, convertIdForStorage};
