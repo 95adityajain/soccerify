@@ -1,4 +1,4 @@
-static class LocalStorageService {
+class LocalStorageService {
     
     static get(propName) {
         return JSON.parse(localStorage.getItem(propName));
@@ -9,7 +9,7 @@ static class LocalStorageService {
     }
 
     static remove(propName) {
-        localStorage.removeItem (propName);
+        localStorage.removeItem(propName);
     }
 }
 

@@ -40,7 +40,7 @@ const sendRequest = function(opts) {
             });
         };
         if (opts.headers) {
-            Object.keys(opts.headers).forEach(function(key) {
+            Object.keys(opts.headers).forEach((key) => {
                 xhr.setRequestHeader(key, opts.headers[key]);
             });
         }
@@ -48,7 +48,7 @@ const sendRequest = function(opts) {
         //need to stringify if we've been given an object
         //If we have a string, this is skipped.
         if (params && typeof params === 'object') {
-            params = Object.keys(params).map(function(key) {
+            params = Object.keys(params).map((key) => {
                 return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
             }).join('&');
         }
@@ -66,7 +66,7 @@ const getDefaultOptionsClone = function() {
 class NetworkService {
 
     static sendRequest(options) {
-        sendRequest(options);
+        return sendRequest(options);
     }
 
     static getCompetitionAjaxOptions() {
@@ -77,13 +77,13 @@ class NetworkService {
 
     static getTeamsAjaxOptions(competitionId) {
         let options = getDefaultOptionsClone();
-        options ["url"] = BASE_URL + "/competitions/"+ competitionId +"/teams";
+        options["url"] = BASE_URL + "/competitions/" + competitionId + "/teams";
         return options;
     }
 
     static getFixturesAjaxOptions(competitionId) {
         let options = getDefaultOptionsClone();
-        options["url"] = BASE_URL + "/competitions/"+ competitionId +"/fixtures";
+        options["url"] = BASE_URL + "/competitions/" + competitionId + "/fixtures";
         options["headers"]["X-Response-Control"] = "compressed";
         return options;
     }

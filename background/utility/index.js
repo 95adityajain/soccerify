@@ -7,7 +7,7 @@ const CURRENT_FIXTURES_NOTIFICATION_ALARM = "current_fixtures_notifications_alar
 const FETCH_FIXTURES_FOR_COMPETITIONS_ALARM = "fetch_fixtures";
 const NOTIFICATION_ICONS = ["play1.svg", "play2.svg", "play3.svg","football.svg", "football1.png"];
     
-const _getRandomNotificationIcon = function() {
+const getRandomNotificationIcon = function() {
     return "assests/notification_icons/" + NOTIFICATION_ICONS[Math.floor(Math.random() * NOTIFICATION_ICONS.length)];
 };
 
@@ -74,7 +74,7 @@ class BGUtility {
     static createFixturesNotification() {
         chrome.notifications.create(CURRENT_FIXTURES_NOTIFICATION, {
             type: "basic",//"progress",
-            iconUrl: _getRandomNotificationIcon (),
+            iconUrl: getRandomNotificationIcon(),
             title: "Soccerify Updates",
             message: "Watch your favorite teams play football today.",
             requireInteraction: true,

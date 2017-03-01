@@ -55,7 +55,7 @@ class UserService {
         let promiseArray = [CompetitionService.getMultipleById(competitionIds),
             TeamService.getMultipleByCompetitionIds(allPreferencesKeys)];
 
-        return Promise.all(promiseArray).then ((result) => {
+        return Promise.all(promiseArray).then((result) => {
             return {preferences: allPreferences, competitions: result[0], teams: result[1]};
         });
     }

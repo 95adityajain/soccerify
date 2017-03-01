@@ -1,8 +1,8 @@
 import PouchDBService from "./PouchDBService";
 import LocalStorageService from "./LocalStorageService";
 import NetworkService from "./NetworkService";
-import Promise form "bluebird";
-import {convertIdForNetwork, convertIdForStorage} from "./CompetitionService";
+import Promise from "bluebird";
+import { convertIdForNetwork, convertIdForStorage } from "./CompetitionService";
 
 
 
@@ -92,7 +92,7 @@ const getFromNetwork = function(competitionNetworkId) {
     });
 };
 const saveInStorage = function(fixtures, competitionStorageId) {
-    console.log ("saving fixtures in db")
+    console.log("saving fixtures in db")
     return PouchDBService.getInstance().bulkDocs(fixtures).then(() => {
         console.log("fixtures successfully saved in db");
         return true;
@@ -139,7 +139,7 @@ const getOneMatchdayFixturesFromStorage = function(fixtureId) {
     return PouchDBService.getInstance().get(fixtureId).then((result) => {
         console.log("one matchday fixtures fetched from pouch");
         return result.fixtures;
-    }).catch ((err) => {
+    }).catch((err) => {
         console.log("eror while getting one matchday fixtures from db", err);
         return Promise.reject();
     });
@@ -161,7 +161,7 @@ class FixturesService {
     }
 
     static fetchAndGetOneMatchday(competitionId, matchday, isRefreshRequest) {
-        return FixturesService.fetchAndStoreForCompetition(competitionId, isRefreshRequest).then (() => {
+        return FixturesService.fetchAndStoreForCompetition(competitionId, isRefreshRequest).then(() => {
             return FixturesService.getByCompetitionAndMatchday(competitionId, matchday);
         });
     }

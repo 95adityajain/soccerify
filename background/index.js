@@ -8,7 +8,7 @@ BGUtility.registerListenerForNotificationButtonClick();
 BGUtility.createCurrentFixturesNotificationAlarm();
 
 chrome.runtime.onStartup.addListener(() => {
-    setTimeout (() => {
+    setTimeout(() => {
         UserService.hasFixturesToday().then((hasFixture) => {
             console.log("on startup");
             if (hasFixture) {

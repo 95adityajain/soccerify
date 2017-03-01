@@ -1,5 +1,5 @@
 import LocalStorageService from "./LocalStorageService";
-import {convertIdForStorage} from "./CompetitionService";
+import { convertIdForStorage } from "./CompetitionService";
 
 
 

@@ -2,7 +2,7 @@ import PouchDB from "pouchdb";
 
 
 
-const DB = null;
+let DB = null;
 
 class PouchDBService {
 
@@ -10,6 +10,7 @@ class PouchDBService {
         if (DB == null) {
             DB = new PouchDB("soccerify", {auto_compaction: true});
         }
+        return DB;
     }
 
     static changeSeason() {

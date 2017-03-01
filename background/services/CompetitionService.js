@@ -1,7 +1,7 @@
 import PouchDBService from "./PouchDBService";
 import LocalStorageService from "./LocalStorageService";
 import NetworkService from "./NetworkService";
-import Promise form "bluebird";
+import Promise from "bluebird";
 
 
 
@@ -34,12 +34,12 @@ const getFromNetwork = function(season) {
     });
 };
 const saveInStorage = function(competitions) {
-    console.log ("saving competitions in db")
+    console.log ("saving competitions in db");
     return PouchDBService.getInstance().bulkDocs(competitions).then(() => {
         console.log("competitions successfully saved in db");
         return true;
     }).catch((err) => {
-        console.lo("error while saving competitions in db", err);
+        console.log("error while saving competitions in db", err);
         return Promise.reject();
     });
 };
@@ -56,7 +56,7 @@ const fetchAndStore = function() {
 const getFromStorage = function() {
     return PouchDBService.getInstance().allDocs({
         include_docs: true, startkey: "competitions", endkey: "competitions\uffff"
-    }).then ((result) => {
+    }).then((result) => {
         console.log ("competitions fetched from pouch", result);
         return result.rows;
     }).then(mapFromStorageToDisplay).catch((err) => {
@@ -98,7 +98,7 @@ class CompetitionService {
     }
 
     static getCurrentMatchday(competitionId) {
-        return PouchDBService.getInstance ().get(competitionId).then((competition) => {
+        return PouchDBService.getInstance().get(competitionId).then((competition) => {
             return competition.currentMatchday;
         });
     }
@@ -107,4 +107,4 @@ class CompetitionService {
 
 
 export default CompetitionService;
-export {convertIdForNetwork, convertIdForStorage};
+export { convertIdForNetwork, convertIdForStorage };

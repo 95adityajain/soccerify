@@ -1,8 +1,8 @@
 import PouchDBService from "./PouchDBService";
 import LocalStorageService from "./LocalStorageService";
 import NetworkService from "./NetworkService";
-import Promise form "bluebird";
-import {convertIdForNetwork, convertIdForStorage} from "./CompetitionService";
+import Promise from "bluebird";
+import { convertIdForNetwork, convertIdForStorage } from "./CompetitionService";
 
 
 
@@ -28,7 +28,7 @@ const mapFromStorageToDisplay = function(teams) {
         return team.doc;
     });
 };
-const mapFromStorageToDisplay_HASH = function(teams) {
+const mapFromStorageToDisplay_MAP = function(teams) {
     return teams.reduce((accumulator, team) => {
         delete team.doc._rev;
         accumulator[team.doc._id] = team.doc;
@@ -38,9 +38,9 @@ const mapFromStorageToDisplay_HASH = function(teams) {
 const getFromNetwork = function(competitionNetworkId) {
     return NetworkService.sendRequest(NetworkService.getTeamsAjaxOptions(competitionNetworkId))
     .then((result) => {
-        console.log("teams fetched from network", teams);
+        console.log("teams fetched from network");
         return result.teams;
-    }).catch ((err) => {
+    }).catch((err) => {
         console.log("error while getting teams from network", err);
         return Promise.reject();
     });
@@ -57,7 +57,7 @@ const saveInStorage = function(teams, competitionStorageId) {
 };
 const fetchAndStore = function(competitionNetworkId, competitionStorageId) {
     LocalStorageService.set(generateLocalFieldTeamFetch(competitionStorageId), VALUE_TEAMS_FETCH.FETCHING);
-    return getFromNetwork(competitionNetworkId).the((res) => {
+    return getFromNetwork(competitionNetworkId).then((res) => {
         return mapFromNetworkToStorage(res, competitionStorageId);
     }).then((list) => {
         return saveInStorage(list, competitionStorageId);
@@ -127,7 +127,7 @@ class TeamService {
             "include_docs": true, "keys": teamIds
         }).then((res) => {
             return res.rows;
-        }).then(mapFromStorageToDisplay_HASH);
+        }).then(mapFromStorageToDisplay_MAP);
     }
 }
 
