@@ -7,6 +7,7 @@
     "start": "webpack-dev-server --progress --inline",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack && cp ./static/* ./build",
+    "postbuild": "cd build && mkdir assets && cd .. && cp -r ./assets/* ./build/assets",
     "prebuild": "npm run clean",
     "clean": "[ -d build ] && rm -r ./build/* || exit 0"
   },
