@@ -1,0 +1,36 @@
+{
+  "name": "soccerify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "start": "webpack-dev-server --progress --inline",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack && cp ./static/* ./build",
+    "prebuild": "npm run clean",
+    "clean": "[ -d build ] && rm -r ./build/* || exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "pouchdb": "^6.1.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-1": "^6.22.0",
+    "babel-preset-stage-2": "^6.22.0",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-1",
+      "stage-2"
+    ]
+  }
+}
