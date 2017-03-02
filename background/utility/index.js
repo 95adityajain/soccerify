@@ -8,7 +8,7 @@ const FETCH_FIXTURES_FOR_COMPETITIONS_ALARM = "fetch_fixtures";
 const NOTIFICATION_ICONS = ["play1.svg", "play2.svg", "play3.svg","football.svg", "football1.png"];
     
 const getRandomNotificationIcon = function() {
-    return "assests/notification_icons/" + NOTIFICATION_ICONS[Math.floor(Math.random() * NOTIFICATION_ICONS.length)];
+    return "assets/notification_icons/" + NOTIFICATION_ICONS[Math.floor(Math.random() * NOTIFICATION_ICONS.length)];
 };
 
 class BGUtility {
@@ -61,12 +61,12 @@ class BGUtility {
         chrome.notifications.onButtonClicked.addListener((notificationId, buttonIndex) => {
             console.log(notificationId + " - " + buttonIndex);
             if (notificationId == CURRENT_FIXTURES_NOTIFICATION) {
-                if (buttonIndex == 0) {
+                //if (buttonIndex == 0) {
                     chrome.tabs.create({url : "popup.html"});
                     //window.open("popup.html", "extension_popup", "width=550,height=550,status=no,scrollbars=yes,resizable=no");
-                } else {
-                    chrome.runtime.openOptionsPage();
-                }
+                //} else {
+                //    chrome.runtime.openOptionsPage();
+                //}
             }
         });
     }
@@ -82,9 +82,9 @@ class BGUtility {
             //progress: 100,
             buttons: [{
                 title: "Show Current Fixtures"
-            },{
+            }/*,{
                 title: "Change Preferences"
-            }]
+            }*/]
         }, function(notificationId) {
             console.log("Notification Displayed - " + notificationId);
         });
