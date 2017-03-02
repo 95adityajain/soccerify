@@ -96,7 +96,7 @@ class UserService {
         };
         let allPreferences = PreferenceService.getAllForTeams();
         const now = new Date();
-        promiseFactories = generatePromiseFactories(Object.keys(allPreferences));
+        let promiseFactories = generatePromiseFactories(Object.keys(allPreferences));
 
         let result = Promise.resolve(false);
         promiseFactories.forEach((promiseFactory) => {
