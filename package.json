@@ -4,11 +4,13 @@
   "description": "",
   "main": "",
   "scripts": {
-    "start": "webpack-dev-server --progress --inline",
+    "start": "echo \"Error: no test specified\" && exit 1",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack && cp ./static/* ./build",
     "postbuild": "cd build && mkdir assets && cd .. && cp -r ./assets/* ./build/assets",
     "prebuild": "npm run clean",
+    "build": "webpack --config=webpack.config.prod.js && cp ./static/* ./build",
+    "build:prod": "webpack --config=webpack.config.prod.js",
+    "build:dev": "webpack --watch --hot --config=webpack.config.dev.js",
     "clean": "[ -d build ] && rm -r ./build/* || exit 0"
   },
   "keywords": [],
@@ -16,20 +18,29 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.4.7",
-    "pouchdb": "^6.1.2"
+    "bootstrap": "^3.3.7",
+    "pouchdb": "^6.1.2",
+    "react": "^15.4.2",
+    "react-bootstrap": "^0.30.7",
+    "react-dom": "^15.4.2"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",
     "babel-loader": "^6.3.2",
     "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
     "babel-preset-stage-1": "^6.22.0",
     "babel-preset-stage-2": "^6.22.0",
-    "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.4.1"
+    "css-loader": "^0.26.2",
+    "file-loader": "^0.10.1",
+    "style-loader": "^0.13.2",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.2.1"
   },
   "babel": {
     "presets": [
       "es2015",
+      "react",
       "stage-1",
       "stage-2"
     ]
