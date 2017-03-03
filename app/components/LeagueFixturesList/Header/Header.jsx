@@ -67,7 +67,7 @@ const HeaderTop = (props) => {
   return (
     <h4>
       <LeagueCaption {...props} />
-      <OverlayTrigger placement="top" overlay={ RefreshButtonTooltip }>
+      <OverlayTrigger placement="left" overlay={ RefreshButtonTooltip }>
         <Button bsStyle="link" className="btn-link-custom" data-index="index" data-action="refresh_get">
           <Glyphicon glyph="refresh" />
         </Button>
