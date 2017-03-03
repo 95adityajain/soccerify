@@ -38,7 +38,7 @@ const AwayTeamDisplay = () => {
         </p>
       </Col>
       <Col md={2} xs={3}>
-        <img className="media-object" src="awayTeam.crestUrl" alt="" />
+        <img className="media-object crest-img" src="http://upload.wikimedia.org/wikipedia/de/3/3f/Real_Madrid_Logo.svg" alt="" />
       </Col>
     </Row>
   );
@@ -48,7 +48,7 @@ const HomeTeamDisplay = () => {
   return (
     <Row>
       <Col md={2} xs={2}>
-        <img className="media-object align-right" src="homeTeam.crestUrl" alt="" />
+        <img className="media-object align-right crest-img" src="http://upload.wikimedia.org/wikipedia/de/3/3f/Real_Madrid_Logo.svg" alt="" />
       </Col>
       <Col md={10} xs={10}>
         <p>
