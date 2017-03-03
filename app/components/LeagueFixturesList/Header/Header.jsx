@@ -46,24 +46,20 @@ const UpdateStatus = () => {
 
 const AlertContainer = () => {
   return (
-    <Row>
-      <Col xs={10} xsOffset={1} md={8} mdOffset={2}>
-        <Alert bsStyle="danger">
-            <Button bsStyle="danger" className="pull-right">Fetch</Button>
-            <h4><b>No Fixtures available</b></h4>
-        </Alert>
-      </Col>
-    </Row>
+    <Col xs={10} xsOffset={1} md={8} mdOffset={2}>
+      <Alert bsStyle="danger">
+          <Button bsStyle="danger" className="pull-right">Fetch</Button>
+          <h4><b>No Fixtures available</b></h4>
+      </Alert>
+    </Col>
   );
 };
 
 const LoadingContainer = () => {
   return (
-    <Row>
-      <Col xs={10} xsOffset={1} md={8} mdOffset={2}>
-        <ProgressBar active now={100} />
-      </Col>
-    </Row>
+    <Col xs={10} xsOffset={1} md={8} mdOffset={2}>
+      <ProgressBar active now={100} />
+    </Col>
   );
 };
 
