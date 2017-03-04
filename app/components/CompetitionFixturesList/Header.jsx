@@ -4,14 +4,12 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 import Button from 'react-bootstrap/lib/Button';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import GlyphiconButton from '../commons/GlyphiconButton/GlyphiconButton';
 import Tooltip from 'react-bootstrap/lib/Tooltip';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import ErrorAlert from '../../commons/ErrorAlert/ErrorAlert';
+import ErrorAlert from '../commons/ErrorAlert/ErrorAlert';
 import ProgressBar from 'react-bootstrap/lib/ProgressBar';
 import Label from 'react-bootstrap/lib/Label';
-
-import HeaderCss from './Header.css';
 
 
 
@@ -24,7 +22,7 @@ const LeagueCaption = ({ caption }) => {
 };
 
 const MatchdayDisplay = ({ currentMatchday }) => {
-  return (<small id="matchday">Matchday - { currentMatchday }</small>);
+  return (<small className="matchday">Matchday - { currentMatchday }</small>);
 };
 
 const CustomRow = ({ children }) => {
@@ -65,9 +63,7 @@ const HeaderTop = (props) => {
     <h4>
       <LeagueCaption {...props} />
       <OverlayTrigger placement="left" overlay={ RefreshButtonTooltip }>
-        <Button bsStyle="link" className="btn-link-custom" data-index="index" data-action="refresh_get">
-          <Glyphicon glyph="refresh" />
-        </Button>
+        <span><GlyphiconButton glyph="refresh" /></span>
       </OverlayTrigger>
     </h4>
   );
@@ -76,13 +72,9 @@ const HeaderTop = (props) => {
 const HeaderMiddle = (props) => {
   return (
     <div>
-      <Button bsStyle="link" className="btn-link-custom" data-index="index" data-action="previous_get">
-        <Glyphicon glyph="chevron-left" />
-      </Button>
+      <GlyphiconButton glyph="chevron-left" />
       <MatchdayDisplay {...props} />
-      <Button bsStyle="link" className="btn-link-custom" data-index="index" data-action="next_get">
-        <Glyphicon glyph="chevron-right" />
-      </Button>
+      <GlyphiconButton glyph="chevron-right" />
     </div>
   );
 };
@@ -99,13 +91,13 @@ const HeaderBottom = () => {
 
 export default class Header extends React.Component {
   render() {
-    const leagueDetails = this.props.league;
+    const competition = this.props.competition;
     return (
       <ListGroupItem className="header">
         <CustomRow>
-          <HeaderTop { ...leagueDetails } />
-          <HeaderMiddle { ...leagueDetails } />
-          <HeaderBottom { ...leagueDetails } />
+          <HeaderTop { ...competition } />
+          <HeaderMiddle { ...competition } />
+          <HeaderBottom { ...competition } />
         </CustomRow>
       </ListGroupItem>
     );

@@ -6,8 +6,6 @@ import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 import Tooltip from 'react-bootstrap/lib/Tooltip';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
-import FixtureCss from './Fixture.css';
-
 
 
 const FixtureTop = () => {
@@ -30,15 +28,16 @@ const AwayTeamDisplay = () => {
   const fullNameTooltip = <Tooltip id="tooltip_1">Real Madrid FC</Tooltip>;
   return (
     <Row>
-      <Col mdOffset={3} md={7} xs={9}>
+      <Col mdOffset={3} md={7} xs={10}>
         <p className="align-right">
           <OverlayTrigger placement="left" overlay={ fullNameTooltip }>
             <span>Real Madrid</span>
           </OverlayTrigger>
         </p>
       </Col>
-      <Col md={2} xs={3}>
-        <img className="media-object crest-img" src="http://upload.wikimedia.org/wikipedia/de/3/3f/Real_Madrid_Logo.svg" alt="" />
+      <Col md={2} xs={2}>
+        <img className="media-object crest-img" style={{float: 'right'}} 
+          src="http://upload.wikimedia.org/wikipedia/de/3/3f/Real_Madrid_Logo.svg" alt="" />
       </Col>
     </Row>
   );
@@ -48,7 +47,7 @@ const HomeTeamDisplay = () => {
   return (
     <Row>
       <Col md={2} xs={2}>
-        <img className="media-object align-right crest-img" src="http://upload.wikimedia.org/wikipedia/de/3/3f/Real_Madrid_Logo.svg" alt="" />
+        <img className="media-object crest-img" src="http://upload.wikimedia.org/wikipedia/de/3/3f/Real_Madrid_Logo.svg" alt="" />
       </Col>
       <Col md={10} xs={10}>
         <p>
