@@ -1,0 +1,35 @@
+.select-team-btn {
+  top: -20px;
+  position: relative;
+}
+
+.modal-header {
+  background: #7986CB;
+  color: white;
+}
+.modal-body {
+  max-height: 350px;
+  overflow-y: scroll; 
+}
+img.team-img {
+  width: 20px;
+  height: 25px;
+  top: 5px;
+}
+
+.team-select-checkbox {
+  width: 1.7em;
+  height: 1.7em;
+  background-color: white;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 1px solid #7986CB;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
+  padding:0px; 
+  margin:0px;
+}
+.team-select-checkbox:checked {
+  background-color: #7986CB;
+}
