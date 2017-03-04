@@ -1,0 +1,13 @@
+.btn-custom {
+  box-shadow: none;
+  color: #7986CB;
+  background: white;
+  border: 1px solid #7986CB;
+}
+.btn-custom:hover, .btn-custom:active, .btn-custom:focus {
+  box-shadow: none;
+  color: white;
+  background: #7986CB;
+  border: 1px solid #7986CB;
+  outline: none;
+}
