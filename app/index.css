@@ -1,0 +1,7 @@
+.hide{
+  visibility: hidden;
+}
+
+body {
+  min-width: 450px;
+}
