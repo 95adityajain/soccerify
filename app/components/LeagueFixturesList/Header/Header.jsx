@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/lib/Button';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import Tooltip from 'react-bootstrap/lib/Tooltip';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import Alert from 'react-bootstrap/lib/Alert';
+import ErrorAlert from '../../commons/ErrorAlert/ErrorAlert';
 import ProgressBar from 'react-bootstrap/lib/ProgressBar';
 import Label from 'react-bootstrap/lib/Label';
 
@@ -47,10 +47,7 @@ const UpdateStatus = () => {
 const AlertContainer = () => {
   return (
     <Col xs={10} xsOffset={1} md={8} mdOffset={2}>
-      <Alert bsStyle="danger">
-          <Button bsStyle="danger" className="pull-right">Fetch</Button>
-          <h4><b>No Fixtures available</b></h4>
-      </Alert>
+      <ErrorAlert showStatus={true} alertMessage={"No fixtures available"} />
     </Col>
   );
 };
