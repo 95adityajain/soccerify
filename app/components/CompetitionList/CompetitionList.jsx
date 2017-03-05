@@ -8,12 +8,23 @@ import Col from 'react-bootstrap/lib/Col';
 
 import Competition from './Competition';
 import CustomButton from '../commons/CustomButton/CustomButton';
+import CustomLoading from '../commons/CustomLoading/CustomLoading';
+import ErrorAlert from '../commons/ErrorAlert/ErrorAlert';
 
 import CompetitionListCss from './CompetitionList.css';
 
 
 
-
+const FetchStatus = ({ status }) => {
+  return (
+    <Row>
+      <Col xs={10} xsOffset={1} md={8} mdOffset={2}>
+        <CustomLoading />
+        <ErrorAlert showStatus={true} alertMessage={"No teams available"}/>
+      </Col>
+    </Row>
+  );
+};
 const TeamListModal = ({ closeModal, showModal, children }) => {
   return (
     <Modal show={showModal} onHide={closeModal} keyboard={false} backdrop={'static'}>
@@ -22,9 +33,14 @@ const TeamListModal = ({ closeModal, showModal, children }) => {
         <Modal.Title>Edit Preferences</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Row><Col mdOffset={2} md={8}><ListGroup>
-        { children }
-        </ListGroup></Col></Row>
+        <Row>
+          <Col mdOffset={2} md={8}>
+            <ListGroup>
+              { children }
+            </ListGroup>
+          </Col>
+        </Row>
+        <FetchStatus />
       </Modal.Body>
       <Modal.Footer>
         <span className="pull-left">
@@ -38,7 +54,6 @@ const TeamListModal = ({ closeModal, showModal, children }) => {
     </Modal>
   )
 };
-
 const Team = ({ }) => {
   return (
     <ListGroupItem>
@@ -82,6 +97,7 @@ export default class CompetitionList extends React.Component {
     return (
       <ListGroup>
         {competitionList}
+        <FetchStatus />
         <TeamListModal showModal={this.state.showModal} closeModal={this.closeModal}>
           <Team />
         </TeamListModal>
