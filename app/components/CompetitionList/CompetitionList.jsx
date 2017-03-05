@@ -51,7 +51,7 @@ const Team = ({ }) => {
           <center><h4>Real Madrid</h4></center>
         </Col>
         <Col md={2} xs={2}>
-          <input type="checkbox" className="team-select-checkbox" />
+          <input type="checkbox" style={{outline: 'none'}} className="team-select-checkbox" />
         </Col>
       </Row>
     </ListGroupItem>
