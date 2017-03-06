@@ -1,6 +1,5 @@
 import Utility from '../utility';
-
-
+import Promise from 'bluebird';
 
 //ACTION TYPE
 export const FETCH_COMPETITIONS =
