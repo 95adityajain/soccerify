@@ -2,10 +2,10 @@ import Promise from 'bluebird';
 
 
 
-const competitions = {
-  'comp1': {},
-  'comp2': {}
-};
+const competitions = [
+  {'_id': 'comp1'},
+  {'_id': 'comp2'},
+];
 
 export const getCompetitions = () => {
   return Promise.resolve(competitions);

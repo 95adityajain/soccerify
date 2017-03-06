@@ -46,6 +46,23 @@ describe("Competition Duck", () => {
       .toEqual(expectedState);
   });
 
+  it("should handle competitionsAlreadyPresent Action", () => {
+    const competitions = {
+      'comp1': {},
+      'comp2': {}
+    };
+    const expectedState = {
+      processed: true,
+      isProcessing: false,
+      value: competitions
+    };
+    let newState = reducer(intialState,
+      CompetitionDuck.fetchCompetitionsSuccess(competitions));
+
+    expect(reducer(newState, CompetitionDuck.competitionsAlreadyPresent()))
+      .toEqual(expectedState);
+  });
+
   it("should handle fetchCompetitionsFailure Action", () => {
     const expectedState = {
       processed: true,
@@ -56,7 +73,7 @@ describe("Competition Duck", () => {
       CompetitionDuck.fetchCompetitionsFailure())).toEqual(expectedState);
   });
 
-  it("should handle getCompetitions Async Action", () => {
+  it("should getCompetitions Async Action dispatch fetchCompetitionsSuccess", () => {
     const expectedActions = [
       {
         type: CompetitionDuck.FETCH_COMPETITIONS
@@ -69,6 +86,24 @@ describe("Competition Duck", () => {
           }
       }
     ];
+    const store = mockStore({competitions: intialState});
+
+    return store.dispatch(CompetitionDuck.getCompetitions()).then(() => {
+      expect(store.getActions()).toEqual(expectedActions)
+    });
+  });
+
+  it("should getCompetitions Async Action dispatches competitionAlreadyPresent", () => {
+    const expectedActions = [{
+        type: CompetitionDuck.FETCH_COMPETITIONS
+      },
+      { 
+        type: CompetitionDuck.COMPETITIONS_ALREADY_PRESENT,
+      }];
+    //mocks intial state, as if competitions were already present;
+    intialState["value"] = {
+      "comp1":{}
+    };
     const store = mockStore({competitions: intialState});
 
     return store.dispatch(CompetitionDuck.getCompetitions()).then(() => {
