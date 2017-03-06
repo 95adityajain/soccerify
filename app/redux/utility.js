@@ -15,3 +15,10 @@ export const getCompetitions = () => {
   return sendMessageToChrome({action: "get/competitions"});
 };
 
+export const getTeams = (competitionId) => {
+  return sendMessageToChrome({
+    "action": "get/competitions/teams/",
+    competitionId
+  });
+};
+
