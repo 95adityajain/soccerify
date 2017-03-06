@@ -18,13 +18,12 @@ describe("Competition Duck", () => {
 
   beforeEach(() => {
     intialState = {
-      processed: false
+      isProcessing: false
     };
   });
 
   it("should handle fetchCompetitions Action", () => {
     const expectedState = {
-      processed: false,
       isProcessing: true
     };
     expect(reducer(intialState, CompetitionDuck.fetchCompetitions()))
@@ -37,7 +36,6 @@ describe("Competition Duck", () => {
       'comp2': {}
     };
     const expectedState = {
-      processed: true,
       isProcessing: false,
       value: competitions
     };
@@ -52,7 +50,6 @@ describe("Competition Duck", () => {
       'comp2': {}
     };
     const expectedState = {
-      processed: true,
       isProcessing: false,
       value: competitions
     };
@@ -65,7 +62,6 @@ describe("Competition Duck", () => {
 
   it("should handle fetchCompetitionsFailure Action", () => {
     const expectedState = {
-      processed: true,
       isProcessing: false,
       error: true
     };

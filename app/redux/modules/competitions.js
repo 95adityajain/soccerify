@@ -13,7 +13,7 @@ export const FETCH_COMPETITIONS_FAILURE =
 
 //Initial State
 const intialState = {
-  processed: false
+  isProcessing: false
 };
 
 //REDUCER
@@ -21,19 +21,16 @@ export default function reducer(state = intialState, action) {
   switch(action.type) {
     case FETCH_COMPETITIONS:
       return {
-        processed: false,
+        ...state,
         isProcessing: true,
-        ...state
       };
     case COMPETITIONS_ALREADY_PRESENT:
       return {
-        processed: true,
+        ...state,
         isProcessing: false,
-        ...state
       };
     case FETCH_COMPETITIONS_SUCCESS:
       return {
-        processed: true,
         isProcessing: false,
         value: {
           ...action.data
@@ -41,7 +38,6 @@ export default function reducer(state = intialState, action) {
       };
     case FETCH_COMPETITIONS_FAILURE:
       return {
-        processed: true,
         isProcessing: false,
         error: true
       };
