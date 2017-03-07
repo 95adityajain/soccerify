@@ -17,8 +17,24 @@ export const getCompetitions = () => {
 
 export const getTeams = (competitionId) => {
   return sendMessageToChrome({
-    "action": "get/competitions/teams/",
+    action: "get/competitions/teams/",
     competitionId
+  });
+};
+
+export const getFixtures = (competitionId, matchDay) => {
+  return sendMessageToChrome({
+    action: "get/competitions/fixtures/by_matchday",
+    competitionId,
+    matchDay
+  });
+};
+
+export const refreshAndGetFixtures = (competitionId, matchDay) => {
+  return sendMessageToChrome({
+    action: "refresh_get/competitions/fixtures/by_matchday";
+    competitionId,
+    matchDay
   });
 };
 
