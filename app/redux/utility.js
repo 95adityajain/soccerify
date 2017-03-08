@@ -38,3 +38,16 @@ export const refreshAndGetFixtures = (competitionId, matchDay) => {
   });
 };
 
+export const getAllPreferences = () => {
+  return sendMessageToChrome({
+    action: "get/teams/preferences/all"
+  });
+};
+
+export const saveTeamsPreferencesByCompetition = (competitionId, preferences) => {
+  return sendMessageToChrome({
+    action: "save/teams/preferences",
+    competitionId,
+    preferences
+  });
+};

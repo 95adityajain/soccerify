@@ -29,6 +29,12 @@ const refreshedFixtures = {
   }
 };
 
+const preferences = {
+  'comp1': {
+    'team1': true
+  }
+};
+
 export const getCompetitions = () => {
   return Promise.resolve(competitions);
 };
@@ -43,11 +49,21 @@ export const getFixtures = (competitionId, matchDay) => {
 
 export const refreshAndGetFixtures = (competitionId, matchDay) => {
   return Promise.resolve(refreshedFixtures[competitionId][matchDay]);
-}; 
+};
+
+export const getAllPreferences = () => {
+  return Promise.resolve(preferences);
+};
+
+export const saveTeamsPreferencesByCompetition = (competitionId, preferences) => {
+  return Promise.resolve();
+};
 
 export default {
   getCompetitions,
   getTeams,
   getFixtures,
-  refreshAndGetFixtures
+  refreshAndGetFixtures,
+  getAllPreferences,
+  saveTeamsPreferencesByCompetition
 };
