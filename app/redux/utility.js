@@ -32,7 +32,7 @@ export const getFixtures = (competitionId, matchDay) => {
 
 export const refreshAndGetFixtures = (competitionId, matchDay) => {
   return sendMessageToChrome({
-    action: "refresh_get/competitions/fixtures/by_matchday";
+    action: "refresh_get/competitions/fixtures/by_matchday",
     competitionId,
     matchDay
   });
