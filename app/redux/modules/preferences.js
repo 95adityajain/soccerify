@@ -1,4 +1,4 @@
-import Utility from '../utility';
+import * as Utility from '../utility';
 import Promise from 'bluebird';
 
 
