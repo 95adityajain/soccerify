@@ -9,7 +9,7 @@
     "test:watch": "npm test -- --watch",
     "postbuild": "cd build && mkdir assets && cd .. && cp -r ./assets/* ./build/assets",
     "prebuild": "npm run clean",
-    "build": "webpack --config=webpack.config.prod.js && cp ./static/* ./build",
+    "build": "webpack --config=webpack.config.dev.js && cp ./static/* ./build",
     "build:prod": "webpack --config=webpack.config.prod.js",
     "build:dev": "webpack --watch --hot --config=webpack.config.dev.js",
     "clean": "[ -d build ] && rm -r ./build/* || exit 0"
@@ -24,6 +24,7 @@
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.2",
+    "react-router": "^3.0.2",
     "redux": "^3.6.0",
     "redux-logger": "^2.8.2",
     "redux-thunk": "^2.2.0"
