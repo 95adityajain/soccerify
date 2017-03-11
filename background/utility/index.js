@@ -5,10 +5,10 @@ import UserService from "../services/UserService";
 const CURRENT_FIXTURES_NOTIFICATION = "current_fixtures_notifications";
 const CURRENT_FIXTURES_NOTIFICATION_ALARM = "current_fixtures_notifications_alarm";
 const FETCH_FIXTURES_FOR_COMPETITIONS_ALARM = "fetch_fixtures";
-const NOTIFICATION_ICONS = ["play1.svg", "play2.svg", "play3.svg","football.svg", "football1.png"];
+const NOTIFICATION_ICONS = ["football.svg"];//,"play1.svg", "play2.svg", "play3.svg", "football1.png"];
     
 const getRandomNotificationIcon = function() {
-    return "assets/notification_icons/" + NOTIFICATION_ICONS[Math.floor(Math.random() * NOTIFICATION_ICONS.length)];
+    return "assets/notification_icons/" + NOTIFICATION_ICONS[0];//NOTIFICATION_ICONS[Math.floor(Math.random() * NOTIFICATION_ICONS.length)];
 };
 
 class BGUtility {
