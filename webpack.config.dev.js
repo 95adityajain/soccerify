@@ -5,7 +5,7 @@ var ENV = 'production';
 
 var config = {
   entry: {
-    //background: [path.join(__dirname + "/background/index.js")],
+    background: [path.join(__dirname + "/background/index.js")],
     app: [path.join(__dirname + "/app/index.js")]
   },
   devServer: {
