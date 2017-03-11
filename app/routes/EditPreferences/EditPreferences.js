@@ -33,9 +33,9 @@ const EditPreferencesHeader = () => {
 export default class EditPreferences extends React.Component {
   render() {
     return (
-      <Grid>
+      <Grid fluid>
         <EditPreferencesHeader />
-        <CompetitionList competitionList={[{},{},{}]} />
+        <CompetitionList />
       </Grid>
     );
   }

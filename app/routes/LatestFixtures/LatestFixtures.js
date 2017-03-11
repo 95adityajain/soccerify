@@ -37,11 +37,9 @@ const LatestFixturesHeader = () => {
 export default class LatestFixtures extends React.Component {
   render() {
     return (
-      <Grid>
+      <Grid fluid>
         <LatestFixturesHeader />
-        <CompetitionFixturesList 
-          competition={{caption: 'Premiere League', currentMatchday: 23}}
-          fixturesList={[{},{},{}]} />
+        <CompetitionFixturesList { ...this.props } />
       </Grid>
     );
   }
