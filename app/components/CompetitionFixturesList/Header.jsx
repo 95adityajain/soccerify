@@ -3,14 +3,13 @@ import React from 'react';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
-import Button from 'react-bootstrap/lib/Button';
-import GlyphiconButton from '../commons/GlyphiconButton/GlyphiconButton';
 import Tooltip from 'react-bootstrap/lib/Tooltip';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import ErrorAlert from '../commons/ErrorAlert/ErrorAlert';
 import ProgressBar from 'react-bootstrap/lib/ProgressBar';
 import Label from 'react-bootstrap/lib/Label';
 
+import ErrorAlert from '../commons/ErrorAlert/ErrorAlert';
+import GlyphiconButton from '../commons/GlyphiconButton/GlyphiconButton';
 
 
 const RefreshButtonTooltip = (
@@ -33,73 +32,81 @@ const CustomRow = ({ children }) => {
   );
 };
 
-const UpdateStatus = () => {
-  return (
-    <div>
-      <Label bsStyle="success">Updated successfully</Label>
-      <Label bsStyle="danger">Error occured while updating</Label>
-    </div>
-  );
+const UpdateStatus = ({ showUpdateStatus, isSuccess }) => {//TODO: handle this
+  return (showUpdateStatus)?
+    (<div>
+      (isSuccess)? (<Label bsStyle="success">Updated successfully</Label>) :
+      (<Label bsStyle="danger">Error occured while updating</Label>)
+    </div>) : null;
 };
 
-const AlertContainer = () => {
-  return (
-    <Col xs={10} xsOffset={1} md={8} mdOffset={2}>
-      <ErrorAlert showStatus={true} alertMessage={"No fixtures available"} />
-    </Col>
-  );
+const AlertContainer = ({ error, onButtonClick }) => {
+  return (error)?
+    (<Col xs={10} xsOffset={1} md={8} mdOffset={2}>
+      <ErrorAlert 
+        showStatus={true}
+        alertMessage={ "Data fetch error" }
+        onClickAlertButtonCallback={ onButtonClick } />
+    </Col>) : null;
 };
 
-const LoadingContainer = () => {
-  return (
-    <Col xs={10} xsOffset={1} md={8} mdOffset={2}>
+const LoadingContainer = ({ isProcessing }) => {
+  return (isProcessing)?
+    (<Col xs={10} xsOffset={1} md={8} mdOffset={2}>
       <ProgressBar active now={100} />
-    </Col>
-  );
+    </Col>) : null;
 };
 
-const HeaderTop = (props) => {
+const HeaderTop = ({ competition, refreshFixtures }) => {
   return (
     <h4>
-      <LeagueCaption {...props} />
+      <LeagueCaption caption={ competition.caption } />
       <OverlayTrigger placement="left" overlay={ RefreshButtonTooltip }>
-        <span><GlyphiconButton glyph="refresh" /></span>
+        <span>
+          <GlyphiconButton glyph="refresh" onClick={ refreshFixtures } />
+        </span>
       </OverlayTrigger>
     </h4>
   );
 };
 
-const HeaderMiddle = (props) => {
+const HeaderMiddle = ({ competition, getNext, getPrevious }) => {
   return (
     <div>
-      <GlyphiconButton glyph="chevron-left" />
-      <MatchdayDisplay {...props} />
-      <GlyphiconButton glyph="chevron-right" />
+      <GlyphiconButton glyph="chevron-left" onClick={ getPrevious } />
+      <MatchdayDisplay currentMatchday={ competition.currentMatchday } />
+      <GlyphiconButton glyph="chevron-right" onClick={ getNext } />
     </div>
   );
 };
 
-const HeaderBottom = () => {
+const HeaderBottom = (props) => {
   return (
     <div>
-      <UpdateStatus />
-      <AlertContainer />
-      <LoadingContainer />
+      <UpdateStatus { ...props }/>
+      <AlertContainer { ...props } />
+      <LoadingContainer { ...props } />
     </div>
   );
 };
 
 export default class Header extends React.Component {
   render() {
-    const competition = this.props.competition;
     return (
       <ListGroupItem className="header">
         <CustomRow>
-          <HeaderTop { ...competition } />
-          <HeaderMiddle { ...competition } />
-          <HeaderBottom { ...competition } />
+          <HeaderTop { ...this.props } />
+          <HeaderMiddle { ...this.props } />
+          <HeaderBottom { ...this.props.fetchStatus } />
         </CustomRow>
       </ListGroupItem>
     );
   }
 }
+Header.propTypes = {
+  competition: React.PropTypes.object.isRequired,
+  fetchStatus: React.PropTypes.object.isRequired,
+  getNext: React.PropTypes.func.isRequired,
+  getPrevious: React.PropTypes.func.isRequired,
+  refreshFixtures: React.PropTypes.func.isRequired
+};
