@@ -50,11 +50,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             break;*/
 
         case "get/competitions/teams/":
-            var promiseArray = [UserService.getTeams(message.competitionId), 
-                    UserService.getTeamsPreferences(message.competitionId)];
-                    
-            Promise.all(promiseArray).then((res) => {
-                sendResponse({"teams": res[0], "preferences": res[1]});
+            UserService.getTeams(message.competitionId).then((res) => {
+                sendResponse(res);
 
                 //Simultaneously fetch fixtures while getting teams (with delay of 1 second)
                 //and set alarm, if fetching failed, to again try to fetch fixtures when alarm is fired.
@@ -80,7 +77,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 sendResponse(false);
             });
             break;
-
+        case "get/teams/preferences/all":
+            UserService.getAllPreferences().then((res) => {
+                sendResponse(res);
+            }).catch(() => {
+                sendResponse(false);
+            });
+            break;
         case "get/competitions/fixtures/by_matchday":
             UserService.fetchCompetitionsFixturesAndGetByOneMatchday(message.competitionId, message.matchday)
             .then((res) => {

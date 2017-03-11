@@ -22,19 +22,19 @@ export const getTeams = (competitionId) => {
   });
 };
 
-export const getFixtures = (competitionId, matchDay) => {
+export const getFixtures = (competitionId, matchday) => {
   return sendMessageToChrome({
     action: "get/competitions/fixtures/by_matchday",
     competitionId,
-    matchDay
+    matchday
   });
 };
 
-export const refreshAndGetFixtures = (competitionId, matchDay) => {
+export const refreshAndGetFixtures = (competitionId, matchday) => {
   return sendMessageToChrome({
     action: "refresh_get/competitions/fixtures/by_matchday",
     competitionId,
-    matchDay
+    matchday
   });
 };
 

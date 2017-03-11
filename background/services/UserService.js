@@ -44,6 +44,10 @@ class UserService {
         return PreferenceService.saveForTeams(competitionId, preferences);
     }
 
+    static getAllPreferences() {
+        return Promise.resolve(PreferenceService.getAllForTeams());
+    }
+
     static getPreferredCompetitionsWithTeams() {
         let allPreferences = PreferenceService.getAllForTeams();
         let allPreferencesKeys = Object.keys(allPreferences);
