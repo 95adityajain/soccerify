@@ -34,9 +34,9 @@ describe("Team Duck", () => {
   });
 
   it("should handle fetchTeamsSuccess Action", () => {
-    const teams = [{
-      '_id': 'team1'
-    }];
+    const teams = {
+      'team1': {'_id': 'teams/comp1/team1'}
+    };
     const expectedState = {
       [competitionId]: {
         isProcessing: false,
@@ -50,9 +50,9 @@ describe("Team Duck", () => {
   });
 
   it("should handle teamsAlreadyPresent Action", () => {
-    const teams = [{
-      '_id': 'team1'
-    }];
+    const teams = {
+      'team1': {'_id': 'teams/comp1/team1'}
+    };
     const expectedState = {
       [competitionId]: {
         isProcessing: false,
@@ -78,16 +78,17 @@ describe("Team Duck", () => {
       TeamDuck.fetchTeamsFailure(competitionId))).toEqual(expectedState);
   });
 
-  it("should getTeams Async Action dispatch fetchTeamsSuccess", () => {
+  it(`getTeams Async Action should
+    dispatch fetchTeamsSuccess`, () => {
     const expectedActions = [{
       type: TeamDuck.FETCH_TEAMS,
       competitionId
     },
     { 
       type: TeamDuck.FETCH_TEAMS_SUCCESS,
-      teams: [{
-        '_id': 'team1'
-      }],
+      teams: {
+        'team1': {'_id': 'teams/comp1/team1'}
+      },
       competitionId
     }];
     const store = mockStore({teams: intialState});
@@ -97,7 +98,8 @@ describe("Team Duck", () => {
     });
   });
 
-  it("should getTeams Async Action dispatches teamsAlreadyPresent", () => {
+  it(`getTeams Async Action should
+    dispatches teamsAlreadyPresent`, () => {
     const expectedActions = [{
       type: TeamDuck.FETCH_TEAMS,
       competitionId
@@ -109,9 +111,9 @@ describe("Team Duck", () => {
     //mocks intial state, as if teams were already present;
     intialState[competitionId] = {
       isProcessing: false,
-      value: [{
-        '_id': 'team1'
-      }]
+      value: {
+        'team1': {'_id': 'teams/comp1/team1'}
+      }
     };
     const store = mockStore({teams: intialState});
 

@@ -1,6 +1,6 @@
 import * as Utility from '../utility';
 import Promise from 'bluebird';
-
+import { updateCompetitionsCurrentMatchday } from './competitions';
 
 
 //ACTION TYPE
@@ -27,6 +27,9 @@ export default function reducer(state = intialState, action) {
   switch(action.type) {
     case FETCH_FIXTURES:
       const currentCompetitionObject = state[action.competitionId] || {};
+      if (currentCompetitionObject[action.matchDay]) {
+        delete currentCompetitionObject[action.matchDay]['error'];
+      }
       return {
         ...state,
         [action.competitionId]: {
@@ -166,17 +169,20 @@ export const refreshFixturesFailure = (competitionId, matchDay) => {
 export const getFixtures = (competitionId, matchDay) => {
   return function(dispatch, getState) {
     dispatch(fetchFixtures(competitionId, matchDay));
-
+    //dispatch(updateCompetitionsCurrentMatchday(competitionId, matchDay));
     if (shouldNotFetch(getState()['fixtures'][competitionId], matchDay)) {
       dispatch(fixturesAlreadyPresent(competitionId, matchDay));
+      dispatch(updateCompetitionsCurrentMatchday(competitionId, matchDay));
       return Promise.resolve();
     }
 
     return Utility.getFixtures(competitionId, matchDay).then((fixtures) => {
       ifRecievedFixturesInvalidThenThrowError(fixtures);
       dispatch(fetchFixturesSuccess(competitionId, matchDay, fixtures));
-    }).catch(() => {
+      dispatch(updateCompetitionsCurrentMatchday(competitionId, matchDay));
+    }).catch((err) => {
       dispatch(fetchFixturesFailure(competitionId, matchDay));
+      dispatch(updateCompetitionsCurrentMatchday(competitionId, matchDay));
     });
   };
 };
@@ -190,6 +196,7 @@ export const refreshAndGetFixtures = (competitionId, matchDay) => {
     return Utility.refreshAndGetFixtures(competitionId, matchDay).then((fixtures) => {
       ifRecievedFixturesInvalidThenThrowError(fixtures);
       dispatch(refreshFixturesSuccess(competitionId, matchDay, fixtures));
+      dispatch(updateCompetitionsCurrentMatchday(competitionId, matchDay));
     }).catch(() => {
       dispatch(refreshFixturesFailure(competitionId, matchDay));
     });
@@ -204,7 +211,8 @@ const ifRecievedFixturesInvalidThenThrowError = (fixtures) => {
 };
 const shouldNotRefresh = (state, matchDay) => {
   //if already refershing OR not fetched at all.
-  return (!state || !state[matchDay] ||
+  return (!state || !state[matchDay] || state[matchDay]['error'] || 
+    state[matchDay]['isProcessing'] ||
     (state['refresh'] && state['refresh']['isProcessing']));
 };
 const shouldNotFetch = (state, matchDay) => {

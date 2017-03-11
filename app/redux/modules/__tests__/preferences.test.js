@@ -85,8 +85,10 @@ describe("Preference Duck", () => {
     };
     const expectedState = {
       'isProcessing': false,
-      'comp1': {
-        saveInProgress: true
+      'value': {
+        'comp1': {
+          saveInProgress: true
+        }
       }
     };
 
@@ -101,9 +103,11 @@ describe("Preference Duck", () => {
     };
     const expectedState = {
       isProcessing: false,
-      'comp1': {
-        saveInProgress: false,
-        ...preferences
+      'value': {
+        'comp1': {
+          saveInProgress: false,
+          ...preferences
+        }
       }
     };
 
@@ -115,9 +119,11 @@ describe("Preference Duck", () => {
   it("should handle saveTeamsPreferencesFailure Action", () => {
     const expectedState = {
       isProcessing: false,
-      'comp1': {
-        saveInProgress: false,
-        saveError:true
+      'value': {
+        'comp1': {
+          saveInProgress: false,
+          saveError:true
+        }
       }
     };
 

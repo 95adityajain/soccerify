@@ -16,6 +16,9 @@ const intialState = {};
 export default function reducer(state = intialState, action) {
   switch(action.type) {
     case FETCH_TEAMS:
+      if (state[action.competitionId]) {
+        delete state[action.competitionId]['error'];
+      }
       return {
         ...state,
         [action.competitionId]: {
@@ -82,20 +85,32 @@ export const getTeams = (competitionId) => {
   return function(dispatch, getState) {
     dispatch(fetchTeams(competitionId));
 
-    const state = getState()['teams'];
-    if (state[competitionId] && state[competitionId]['value']) {
+    if (shouldNotFetch(getState()['teams'], competitionId)) {
       dispatch(teamsAlreadyPresent(competitionId));
       return Promise.resolve();
     }
 
     return Utility.getTeams(competitionId).then((teams) => {
-      if (!teams || !teams.length || teams.length == 0) {
-        throw Error();
-      } else {
-        dispatch(fetchTeamsSuccess(competitionId, teams));
-      }
-    }).catch(() => {
+      ifRecievedTeamsInvalidThenThrowError(teams);
+      return teams.reduce((acc, team) => {
+        const extractedId = team._id.split("/")[2];
+        acc[extractedId] = team;
+        return acc;
+      }, {});
+    }).then((teams) => {
+      dispatch(fetchTeamsSuccess(competitionId, teams));
+    }).catch((err) => {
       dispatch(fetchTeamsFailure(competitionId));
     });
   }
 };
+
+//HELPERS
+const shouldNotFetch = (state,competitionId) => {
+  return state[competitionId] && state[competitionId]['value'];
+};
+const ifRecievedTeamsInvalidThenThrowError = (teams) => {
+  if (!teams || !teams.length || teams.length == 0) {
+    throw Error();
+  }
+}

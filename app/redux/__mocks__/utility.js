@@ -9,7 +9,7 @@ const competitions = [
 
 const teams = {
   'comp1': [{
-    '_id': 'team1'
+    '_id': 'teams/comp1/team1'
   }]
 };
 

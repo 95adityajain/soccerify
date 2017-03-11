@@ -3,6 +3,7 @@ jest.mock('../../utility');
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import * as FixtureDuck from '../fixtures';
+import { UPDATE_COMPETITONS_CURRENT_MATCHDAY } from '../competitions';
 
 
 
@@ -179,7 +180,8 @@ describe("Fixture Duck", () => {
       .toEqual(expectedState);
   });
 
-  it("should getFixtures Async Action dispatch fetchFixturesSuccess", () => {
+  it(`getFixtures Async Action should
+    dispatch fetchFixturesSuccess`, () => {
     const expectedActions = [{
       type: FixtureDuck.FETCH_FIXTURES,
       competitionId,
@@ -192,6 +194,11 @@ describe("Fixture Duck", () => {
       }],
       competitionId,
       matchDay
+    },
+    {
+      type: UPDATE_COMPETITONS_CURRENT_MATCHDAY,
+      newCurrentMatchday: matchDay,
+      competitionId
     }];
     const store = mockStore({fixtures: intialState});
 
@@ -212,6 +219,11 @@ describe("Fixture Duck", () => {
       type: FixtureDuck.FIXTURES_ALREADY_PRESENT,
       competitionId,
       matchDay
+    },
+    {
+      type: UPDATE_COMPETITONS_CURRENT_MATCHDAY,
+      newCurrentMatchday: matchDay,
+      competitionId
     }];
     //mocks intial state, as if teams were already present;
     intialState[competitionId] = {};
@@ -242,6 +254,11 @@ describe("Fixture Duck", () => {
       }],
       competitionId,
       matchDay
+    },
+    {
+      type: UPDATE_COMPETITONS_CURRENT_MATCHDAY,
+      newCurrentMatchday: matchDay,
+      competitionId
     }];
     const intialState = {
       [competitionId]: {

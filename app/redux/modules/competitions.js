@@ -10,6 +10,8 @@ export const COMPETITIONS_ALREADY_PRESENT =
   'soccerify/competitions/COMPETITIONS_ALREADY_PRESENT';
 export const FETCH_COMPETITIONS_FAILURE =
   'soccerify/competitions/FETCH_COMPETITIONS_FAILURE';
+export const UPDATE_COMPETITONS_CURRENT_MATCHDAY =
+  'soccerify/competitions/UPDATE_COMPETITONS_CURRENT_MATCHDAY';
 
 //Initial State
 const intialState = {
@@ -20,6 +22,7 @@ const intialState = {
 export default function reducer(state = intialState, action) {
   switch(action.type) {
     case FETCH_COMPETITIONS:
+      delete state['error'];
       return {
         ...state,
         isProcessing: true,
@@ -33,7 +36,7 @@ export default function reducer(state = intialState, action) {
       return {
         isProcessing: false,
         value: {
-          ...action.data
+          ...action.competitions
         }
       };
     case FETCH_COMPETITIONS_FAILURE:
@@ -41,6 +44,17 @@ export default function reducer(state = intialState, action) {
         isProcessing: false,
         error: true
       };
+    case UPDATE_COMPETITONS_CURRENT_MATCHDAY:
+      return {
+        ...state,
+        ['value']: {
+          ...state['value'],
+          [action.competitionId]: {
+            ...state['value'][action.competitionId],
+            currentMatchday: action.newCurrentMatchday
+          }
+        }
+      }
     default:
       return state;
   }
@@ -52,10 +66,10 @@ export const fetchCompetitions = () => {
     type: FETCH_COMPETITIONS
   };
 };
-export const fetchCompetitionsSuccess = (data) => {
+export const fetchCompetitionsSuccess = (competitions) => {
   return {
     type: FETCH_COMPETITIONS_SUCCESS,
-    data
+    competitions
   };
 };
 export const fetchCompetitionsFailure = () => {
@@ -68,28 +82,44 @@ export const competitionsAlreadyPresent = () => {
     type: COMPETITIONS_ALREADY_PRESENT
   };
 };
+export const updateCompetitionsCurrentMatchday = (
+  competitionId,
+  newCurrentMatchday) => {
+  return {
+    type: UPDATE_COMPETITONS_CURRENT_MATCHDAY,
+    competitionId,
+    newCurrentMatchday
+  }
+};
 export const getCompetitions = () => {
   return function(dispatch, getState) {
     dispatch(fetchCompetitions());
 
-    if (getState()["competitions"]["value"]) {
+    if (shouldNotFetch(getState()["competitions"])) {
       dispatch(competitionsAlreadyPresent());
       return Promise.resolve();
     }
 
     return Utility.getCompetitions().then((competitions) => {
-      if (!competitions || !competitions.length || competitions.length == 0) {
-        throw Error();
-      }
+      ifRecievedCompetitionsInvalidThenThrowError(competitions);
       return competitions.reduce((acc, competition) => {
         acc[competition._id] = competition;
-        delete acc[competition._id]['_id'];
         return acc;
       }, {});
     }).then((competitions) => {
       dispatch(fetchCompetitionsSuccess(competitions));
-    }).catch(() => {
+    }).catch((err) => {
       dispatch(fetchCompetitionsFailure());
     });
+  }
+};
+
+//HELPERS
+const shouldNotFetch = (state) => {
+  return state && state['value'];
+};
+const ifRecievedCompetitionsInvalidThenThrowError = (competitions) => {
+  if(!competitions || !competitions.length || competitions.length == 0) {
+    throw Error();
   }
 };

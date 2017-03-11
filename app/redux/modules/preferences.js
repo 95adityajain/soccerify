@@ -28,6 +28,7 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch(action.type) {
     case FETCH_ALL_PREFERENCES:
+      delete state['error'];
       return {
         ...state,
         isProcessing: true
@@ -52,26 +53,35 @@ export default function reducer(state = initialState, action) {
     case SAVE_TEAMS_PREFERENCES:
       return {
         ...state,
-        [action.competitionId]: {
-          ...state[action.competitionId],
-          saveInProgress: true
+        ['value']: {
+          ...state['value'],
+          [action.competitionId]: {
+            ...state[action.competitionId],
+            saveInProgress: true
+          }
         }
       };
     case SAVE_TEAMS_PREFERENCES_SUCCESS:
       return {
         ...state,
-        [action.competitionId]: {
-          ...action.preferences,
-          saveInProgress: false
+        ['value']: {
+          ...state['value'],
+          [action.competitionId]: {
+            ...action.preferences,
+            saveInProgress: false
+          }
         }
       };
     case SAVE_TEAMS_PREFERENCES_FAILURE:
       return {
         ...state,
-        [action.competitionId]: {
-          ...state[action.competitionId],
-          saveInProgress: false,
-          saveError: true
+        ['value']: {
+          ...state['value'],
+          [action.competitionId]: {
+            ...state[action.competitionId],
+            saveInProgress: false,
+            saveError: true
+          }
         }
       };
     default:
