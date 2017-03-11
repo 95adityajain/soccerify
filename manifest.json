@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+
+  "name": "Soccerify",
+  "description": "This extension notify users of their favourite football teams fixtures.",
+  "version": "0.0.1",
+
+  "browser_action": {
+    "default_popup": "index.html"
+  },
+  "background": { 
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "notifications",
+    "alarms"
+  ]
+}
