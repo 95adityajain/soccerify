@@ -8,14 +8,14 @@ import GlyphiconButtonCss from './GlyphiconButton.css';
 export default class GlyphiconButton extends React.Component {
   render() {
     const glyph = this.props.glyph;
-    const optionalProps = {...this.props};
+    const optionalProps = { ...this.props };
     delete optionalProps['glyph'];
 
     return (
       <Button bsStyle="link" className="btn-glyphicon-custom"
-        style={{outline:'none'}} {...optionalProps}>
+        style={{outline:'none'}} { ...optionalProps }>
 
-        <Glyphicon glyph={glyph} />
+        <Glyphicon glyph={ glyph } />
       </Button>
     );
   }
