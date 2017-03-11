@@ -1,107 +1,223 @@
 import React from 'react';
 
 import ListGroup from 'react-bootstrap/lib/ListGroup';
-import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
-import Modal from 'react-bootstrap/lib/Modal';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
 import Competition from './Competition';
-import CustomButton from '../commons/CustomButton/CustomButton';
-import CustomLoading from '../commons/CustomLoading/CustomLoading';
-import ErrorAlert from '../commons/ErrorAlert/ErrorAlert';
+import Team from './Team';
+import TeamListModal from './TeamListModal';
+import FetchStatus from './FetchStatus';
+
+import { getCompetitions } from '../../redux/modules/competitions';
+import { getTeams } from '../../redux/modules/teams';
+import {
+  getAllPreferences,
+  saveTeamsPreferencesByCompetition
+} from '../../redux/modules/preferences';
 
 import CompetitionListCss from './CompetitionList.css';
 
 
 
-const FetchStatus = ({ status }) => {
-  return (
-    <Row>
-      <Col xs={10} xsOffset={1} md={8} mdOffset={2}>
-        <CustomLoading />
-        <ErrorAlert showStatus={true} alertMessage={"No teams available"}/>
-      </Col>
-    </Row>
-  );
-};
-const TeamListModal = ({ closeModal, showModal, children }) => {
-  return (
-    <Modal show={showModal} onHide={closeModal} keyboard={false} backdrop={'static'}>
-      <Modal.Header>
-        <CustomButton onClick={ closeModal }>Close</CustomButton>
-        <Modal.Title>Edit Preferences</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Row>
-          <Col mdOffset={2} md={8}>
-            <ListGroup>
-              { children }
-            </ListGroup>
-          </Col>
-        </Row>
-        <FetchStatus />
-      </Modal.Body>
-      <Modal.Footer>
-        <span className="pull-left">
-            <CustomButton>Select All</CustomButton>
-        </span>
-        <span className="pull-left">
-          &nbsp;&nbsp;<CustomButton>Deselect All</CustomButton>
-        </span>
-        <CustomButton>Save</CustomButton>
-      </Modal.Footer>
-    </Modal>
-  )
-};
-const Team = ({ }) => {
-  return (
-    <ListGroupItem>
-      <Row>
-        <Col md={2} xs={2}>
-          <img className="media-object team-img" 
-            src="http://upload.wikimedia.org/wikipedia/de/3/3f/Real_Madrid_Logo.svg" alt="" />
-        </Col>
-        <Col md={8} xs={8}>
-          <center><h4>Real Madrid</h4></center>
-        </Col>
-        <Col md={2} xs={2}>
-          <input type="checkbox" style={{outline: 'none'}} className="team-select-checkbox" />
-        </Col>
-      </Row>
-    </ListGroupItem>
-  );
-};
-
-export default class CompetitionList extends React.Component {
-  
+export default class CompetitionList extends React.Component { 
   constructor() {
     super();
-    this.state = { showModal: false };
+    this.state = {
+      showModal: false,
+      selectedTeams: {}
+    };
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
+    this.tooglePreference = this.tooglePreference.bind(this);
+    this.savePreferences = this.savePreferences.bind(this);
+    this.selectAllCheckboxes = this.selectAllCheckboxes.bind(this);
+    this.deselectAllCheckboxes = this.deselectAllCheckboxes.bind(this);
   }
   closeModal() {
-    this.setState({ showModal: false });
+    const { store } = this.context;
+    const preferences = store.getState()['preferences']['value'];
+    const teams = store.getState()['teams'];
+    if ((preferences[this.state['currentCompetitionId']] && 
+        preferences[this.state['currentCompetitionId']]['saveInProgress']) ||
+        teams[this.state['currentCompetitionId']]['isProcessing']) {
+      return; //don't close if save_preference OR fetch_teams is in progress
+    }
+    this.setState({
+      showModal: false,
+      selectedTeams: {},
+      currentCompetitionId: null
+    });
   }
-  openModal() {
-    this.setState({ showModal: true });
+  openModal(currentCompetitionId) {
+    const { store } = this.context;
+    const preferences = store.getState()['preferences']['value'];
+    store.dispatch(getTeams(currentCompetitionId));
+
+    let selectedTeams = {};
+    if (preferences && preferences[currentCompetitionId]) {
+      selectedTeams = {
+        ...preferences[currentCompetitionId]
+      }
+    }
+
+    this.setState({
+      showModal: true,
+      selectedTeams,
+      currentCompetitionId
+    });
+  }
+  tooglePreference(teamId) {
+    if (this.state['selectedTeams'][teamId]) {
+      delete this.state['selectedTeams'][teamId];
+      this.setState({
+        selectedTeams:{
+          ...this.state['selectedTeams']
+        }
+      });
+    } else {
+      this.setState({
+        selectedTeams:{
+          ...this.state['selectedTeams'],
+          [teamId]: true
+        }
+      });
+    }
+  }
+  savePreferences() {
+    const { store } = this.context;
+    store.dispatch(saveTeamsPreferencesByCompetition(
+      this.state['currentCompetitionId'],
+      this.state['selectedTeams']
+    ));
+  }
+  selectAllCheckboxes() {
+    const { store } = this.context;
+    const teams = store.getState()['teams'][this.state['currentCompetitionId']];
+    const teamIdsArray = (teams['value']) ? Object.keys(teams['value']) : [];
+
+    this.setState({
+      selectedTeams: teamIdsArray.reduce((acc, teamId) => {
+        acc[teamId] = true;
+        return acc;
+      }, {})
+    });
+  }
+  deselectAllCheckboxes(){
+    this.setState({
+      selectedTeams: {}
+    });
   }
 
-  render() {
-    const competitionList = this.props.competitionList.map((competition ,index) => {
-      competition.onSelectTeamBtnClick = this.openModal;
-      return (<Competition {...competition} key={index} />);
+  componentWillMount() {
+    const { store } = this.context;
+    store.dispatch(getCompetitions());
+    store.dispatch(getAllPreferences());
+  }
+  componentDidMount() {
+    const { store } = this.context;
+    this.unsubscribe = store.subscribe(() => {
+      this.forceUpdate();
     });
+  }
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+  render() {
+    const { store } = this.context;
+    const competitions = store.getState()['competitions'];
+    const preferences = store.getState()['preferences'];
+    const teams = store.getState()['teams'];
+
+    const currentCompetitionId = this.state['currentCompetitionId'];
+    let currentTeams = null;
+
+    if (currentCompetitionId) {
+       currentTeams = teams[currentCompetitionId]['value'];
+    }
+
+    const competitionFetchStatus = {
+      isProcessing: (competitions['isProcessing'] ||
+        preferences['isProcessing']) ? true: false,
+      error: (competitions['error'] ||
+        preferences['error']) ? true : false,
+      onButtonClick: function() {
+        store.dispatch(getCompetitions());
+      },
+      errorText: "No Competition Available",
+      btnText: "Fetch Competitions"
+    };
+    const teamsFetchStatus = {
+      isProcessing: (currentCompetitionId && 
+        teams[currentCompetitionId]['isProcessing']) ? true: false,
+      error: (!currentCompetitionId ||
+        teams[currentCompetitionId]['error']) ? true: false,
+      onButtonClick: function() {
+        store.dispatch(getTeams(currentCompetitionId));
+      },
+      errorText: "No Teams Available",
+      btnText: "Fetch Teams"
+    };
+
+    if (competitionFetchStatus.isProcessing || 
+        competitionFetchStatus.error) {
+      return (
+        <div>
+          <br />
+          <FetchStatus { ...competitionFetchStatus } />
+        </div>
+      );
+    }
 
     return (
-      <ListGroup>
-        {competitionList}
-        <FetchStatus />
-        <TeamListModal showModal={this.state.showModal} closeModal={this.closeModal}>
-          <Team />
-        </TeamListModal>
-      </ListGroup>
+      <Row>
+        <ListGroup>
+          {
+            Object.keys(competitions['value']).map((competitionId) => {
+              return (
+                <Competition 
+                  competition={ competitions['value'][competitionId] } 
+                  onSelectTeamBtnClick={ this.openModal }
+                  key={ competitionId } />
+              );
+            })
+          }
+          <TeamListModal showModal={ this.state.showModal } 
+            closeModal={ this.closeModal }
+            savePreferences={ this.savePreferences }
+            selectAllCheckboxes={ this.selectAllCheckboxes }
+            deselectAllCheckboxes={ this.deselectAllCheckboxes } >
+            {
+              (!this.state.showModal)? null :
+                (<Row>
+                  <Col mdOffset={2} md={8}>
+                    <ListGroup>
+                    {(teamsFetchStatus.isProcessing || teamsFetchStatus.error)?
+                      null :
+                      (Object.keys(currentTeams).map((teamId) => {
+                        const that = this;
+                        return (
+                          <Team team={ currentTeams[teamId] }
+                            preferences={ this.state.selectedTeams }
+                            key={ teamId }
+                            teamId={ teamId }
+                            onCheckboxClick={ () => {
+                              that.tooglePreference(teamId)
+                            }} />
+                        )
+                      }))
+                    }
+                    </ListGroup>
+                  </Col>
+                </Row>)
+            }
+            <FetchStatus { ...teamsFetchStatus } />
+          </TeamListModal>
+        </ListGroup>
+      </Row>
     );
   }
 }
+CompetitionList.contextTypes = {
+  store: React.PropTypes.object
+};

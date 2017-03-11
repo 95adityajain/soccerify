@@ -6,9 +6,12 @@ import CustomButton from '../commons/CustomButton/CustomButton';
 
 
 
-const SelectTeamButton = ({ onSelectTeamBtnClick }) =>{
+const SelectTeamButton = ({ onSelectTeamBtnClick, competition }) =>{
+  const onClick = function() {
+    onSelectTeamBtnClick(competition._id);
+  }
   return (
-    <CustomButton className="select-team-btn" onClick={ onSelectTeamBtnClick }>
+    <CustomButton className="select-team-btn" onClick={ onClick }>
       <Glyphicon glyph="star" /> Select Teams
     </CustomButton>
   );
@@ -16,11 +19,11 @@ const SelectTeamButton = ({ onSelectTeamBtnClick }) =>{
 
 export default class Competition extends React.Component {
   render() {
-    const competition = {caption: 'Champions League 2016/17',numberOfGames: 20, numberOfTeams: 10};
+    const { competition } = this.props;
     return (
       <ListGroupItem header={ competition.caption }>
-        Total of<b> {competition.numberOfGames} </b>games will be played by
-        <b> { competition.numberOfTeams } </b> teams.
+        <small>Total of<b> {competition.numberOfGames} </b>games will be played by
+        <b> { competition.numberOfTeams } </b> teams.</small>
         <SelectTeamButton { ...this.props } />
       </ListGroupItem>
     );
